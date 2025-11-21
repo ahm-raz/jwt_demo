@@ -47,7 +47,16 @@ export const login = async (req, res) => {
     const token = jwt.sign({ username }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES,
     });
-    res.json({ success: true, message: "User logged in successfully", token });
+
+    //generate a cookie + jwt
+    res.cookie("authToken",token,{
+      httpOnly: true,
+      secure:false,
+      sameSite: "lax",
+      maxAge: 1 * 60 * 60 * 1000,
+    });
+
+    res.json({ success: true, message: "User logged in successfully"});
   } catch (error) {
     res.status(401).json({ message: error.message });
   }
@@ -55,4 +64,9 @@ export const login = async (req, res) => {
 
 export const getProtected = (req,res) => {
   res.status(200).json({message: `Hello ${req.user.username}, this is protected data`})
+}
+
+export const logout = (req,res) => {
+  res.clearCookie("authToken");
+  res.json({success:true, message:"Logged out successfully"})
 }
