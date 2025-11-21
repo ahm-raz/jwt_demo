@@ -2,7 +2,6 @@
 node_modules/
 
 # Environment variables
-.env
 
 # Logs
 npm-debug.log*
@@ -15,3 +14,4 @@ Thumbs.db
 
 # Optional: build folders
 dist/
+config.bat
